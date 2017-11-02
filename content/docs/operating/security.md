@@ -37,9 +37,15 @@ possible for a target to expose data that impersonates a different target.  The
 `honor_labels` option removes this protection, as can certain relabelling
 setups.
 
-At present the HTTP API grants the ability to reload configuration files,
-shutdown the server, and delete time series. This will be [changed in Prometheus
-2.0](https://github.com/prometheus/prometheus/issues/2173).
+As of Prometheus 2.0, the `--web.enable-admin-api` flag by default disables the
+administrative HTTP API which includes functionality such as deleting time
+series. If enabled administrative and mutating functionality will be accessible
+under the `/api/*/admin/` paths.  The `--web.enable-lifecycle` flag by default
+disallows HTTP reloads and shutdowns of Prometheus, and if enabled they will be
+accessible under the `/-/reload` and `/-/quit` paths.
+
+In Prometheus 1.x, `/-/reload`, `/-/quit` and using `DELETE` on
+`/api/v1/series` are accessible to anyone with access to the HTTP API.
 
 The remote read feature allows anyone with HTTP access to send queries to the
 remote read endpoint. If for example the PromQL queries were ending up directly
